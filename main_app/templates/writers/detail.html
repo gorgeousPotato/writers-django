@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="page-title">Writer Details</h1>
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ writer.name }}</span>
+    <p>Born: {{ writer.birth_year }}</p>
+    <p>Died: {{ writer.death_year }}</p>
+    <p>Country: {{writer.country}}</p>
+    <p>Favourite quote: {{writer.fav_quote | linebreaks}}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'writer_update' writer.id %}" class="edit-button">Edit</a>
+    <a href="{% url 'writer_delete' writer.id %}" class="edit-button">Delete</a>
+  </div>
+</div>
+
+
+{% endblock %}

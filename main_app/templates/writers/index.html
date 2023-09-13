@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="page-title">Writers List</h1>
+
+{% for writer in writers %}
+  <div class="card">
+    <a href="{% url 'detail' writer.id %}" class="a-card">
+      <div class="card-content">
+        <span class="card-title">{{ writer.name }}</span>
+        <p>Born: {{ writer.birth_year }}</p>
+        <p>Died: {{ writer.death_year }}</p>
+        <p>Country: {{writer.country}}</p>
+        <p>Favourite quote: {{writer.fav_quote}}</p>
+      </div>
+    </a>  
+  </div>
+{% endfor %}
+
+{% endblock %}

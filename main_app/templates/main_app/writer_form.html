@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if writer %}
+<h1 class="page-title">Edit Writer {{writer.name}}</h1>
+{% else %}
+<h1 class="page-title">Add Writer</h1>
+{% endif %}
+  <form action="" method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit!" class="btn indigo lighten-2">
+  </form>
+{% endblock %}

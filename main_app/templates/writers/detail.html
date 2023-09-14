@@ -1,19 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="page-title">Writer Details</h1>
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ writer.name }}</span>
-    <p>Born: {{ writer.birth_year }}</p>
-    <p>Died: {{ writer.death_year }}</p>
-    <p>Country: {{writer.country}}</p>
-    <p>Favourite quote: {{writer.fav_quote | linebreaks}}</p>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ writer.name }}</span>
+        <p>Born: {{ writer.birth_year }}</p>
+        <p>Died: {{ writer.death_year }}</p>
+        <p>Country: {{writer.country}}</p>
+        <p>Favourite quote: {{writer.fav_quote | linebreaks}}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'writer_update' writer.id %}" class="edit-button">Edit</a>
+        <a href="{% url 'writer_delete' writer.id %}" class="edit-button">Delete</a>
+      </div>
+    </div>
   </div>
-  <div class="card-action">
-    <a href="{% url 'writer_update' writer.id %}" class="edit-button">Edit</a>
-    <a href="{% url 'writer_delete' writer.id %}" class="edit-button">Delete</a>
+  <div class="col s6">
+    <form method="POST" action="{% url 'add_book' writer.id %}">
+      {% csrf_token %}
+      {{ book_form.as_p }}
+      <input type="submit" class="btn" value="Add Book">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Year</th><th>Book</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        {% for book in writer.book_set.all %}
+          <tr>
+            <td>{{book.year}}</td>
+            <td>{{book.title}}</td>
+            <td>{{book.get_type_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
+
+<script>
+  const dateEl = document.getElementById('id_year');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date("1920-01-02"),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectEl = document.getElementById('id_type');
+  M.FormSelect.init(selectEl);
+</script>
 
 
 {% endblock %}

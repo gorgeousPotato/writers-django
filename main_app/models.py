@@ -33,3 +33,6 @@ class Book(models.Model):
 
   def __str__(self):
     return f"{self.title} - {self.get_type_display()} - {self.year}"
+  
+  class Meta:
+    ordering=['-year']

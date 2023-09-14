@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Writer
+from .forms import BookForm
 
 def home(request):
   return render(request, 'home.html')
@@ -16,8 +17,10 @@ def writers_index(request):
 
 def writers_detail(request, writer_id):
   writer = Writer.objects.get(id=writer_id)
+  book_form = BookForm()
   return render(request, 'writers/detail.html', {
-    'writer': writer
+    'writer': writer,
+    'book_form': book_form
   })
 
 class WriterCreate(CreateView):
@@ -32,3 +35,11 @@ class WriterUpdate(UpdateView):
 class WriterDelete(DeleteView):
   model = Writer
   success_url = '/writers'
+
+def add_book(request, writer_id):
+  form = BookForm(request.POST)
+  if form.is_valid():
+    new_book = form.save(commit=False)
+    new_book.writer_id = writer_id
+    new_book.save()
+  return redirect('detail', writer_id=writer_id)
